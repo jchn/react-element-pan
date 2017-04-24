@@ -5,6 +5,8 @@ var eventListener = require('eventlistener');
 
 var PropTypes = React.PropTypes;
 
+var noop = function() {};
+
 var ElementPan = React.createClass({
     displayName: 'ElementPan',
 
@@ -17,12 +19,14 @@ var ElementPan = React.createClass({
         startY: PropTypes.number,
         width: PropTypes.number,
         height: PropTypes.number,
-        style: PropTypes.object
+        style: PropTypes.object,
+        disabled: PropTypes.bool
     },
 
     getDefaultProps: function() {
         return {
-            className: 'element-pan'
+            className: 'element-pan',
+            disabled: false
         };
     },
 
@@ -164,8 +168,8 @@ var ElementPan = React.createClass({
                 ref: 'container',
                 className: this.props.className,
                 style: this.getContainerStyles(),
-                onMouseDown: this.onDragStart,
-                onTouchStart: this.onDragStart
+                onMouseDown: this.props.disabled ? noop : this.onDragStart,
+                onTouchStart: this.props.disabled ? noop : this.onDragStart
             }, this.props.children)
         );
     }
